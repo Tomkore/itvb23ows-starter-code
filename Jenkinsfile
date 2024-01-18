@@ -13,7 +13,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Voer een script of build commando uit
-                PoSh 'docker-compose up -d'
+                bat 'docker-compose up -d'
             }
         }
 
