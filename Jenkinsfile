@@ -2,12 +2,12 @@ pipeline {
     agent any
 
     stages {
-//         stage('Checkout') {
-//             steps {
-//                 // Haalt code op uit je Git repository
-//                 git url: 'https://github.com/Tomkore/itvb23ows-starter-code.git'
-//             }
-//         }
+         stage('Checkout') {
+             steps {
+                 // Haalt code op uit je Git repository
+                 git url: 'https://github.com/Tomkore/itvb23ows-starter-code.git'
+             }
+         }
 
         stage('Build') {
             steps {
