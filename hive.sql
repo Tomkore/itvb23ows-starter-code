@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.33, for macos13.3 (arm64)
 --
--- Host: localhost    Database: hive
+-- Host: 127.0.0.1    Database: hive
 -- ------------------------------------------------------
 -- Server version	8.0.33
 
