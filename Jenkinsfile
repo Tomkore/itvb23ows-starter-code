@@ -13,6 +13,8 @@ pipeline {
         stage('Build') {
             steps {
                 // Voer een script of build commando uit
+                curl -fsSL 'https://get.docker.com -o get-docker.sh'
+                sh get-docker.sh
                 sh 'docker-compose up -d'
             }
         }
