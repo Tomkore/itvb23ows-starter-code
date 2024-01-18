@@ -20,5 +20,3 @@ services:
       - "./hive.sql:/docker-entrypoint-initdb.d/1.sql"
     command: --default-authentication-plugin=mysql_native_password
 
-#  jenkins:
-#    image: jenkins/jenkins:lts-jdk17
