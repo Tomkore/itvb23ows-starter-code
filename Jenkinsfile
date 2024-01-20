@@ -9,12 +9,22 @@ pipeline {
             }
         }
 
+        stage('SonarQube Analysis') {
+            steps {
+                withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
+                    sh 'sonar-scanner -Dsonar.projectKey=my_project_key -Dsonar.sources=. -Dsonar.host.url=http://mysonarqube.example.com -Dsonar.login=$SONAR_TOKEN'
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 // Voer een script of build commando uit
                 sh 'docker-compose up -d'
             }
         }
+
+
 
         // Je kunt meer stages toevoegen voor testen, linting, etc.
     }
