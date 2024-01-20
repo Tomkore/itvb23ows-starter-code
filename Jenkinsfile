@@ -11,7 +11,6 @@ pipeline {
 
         stage('docker compose') {
             steps {
-                sh chmod +x /var/jenkins_home/docker-compose
                 sh  "curl -L https://github.com/docker/compose/releases/download/1.25.3/run.sh -o /usr/local/bin/docker-compose"
             }
         }
