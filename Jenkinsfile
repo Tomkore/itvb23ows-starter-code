@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-         stage('Checkout') {
+        stage('Checkout') {
             steps {
                 // Haalt code op uit je Git repository
                 git url: 'https://github.com/Tomkore/itvb23ows-starter-code.git', branch: 'Jenkins-sonarqube-containers'
