@@ -12,7 +12,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Voer een script of build commando uit
-                sh 'docker-compose up -d'
+                sh 'docker run docker-compose up -d'
             }
         }
 
