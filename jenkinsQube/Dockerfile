@@ -11,6 +11,7 @@ RUN mkdir -p /var/lib/apt/lists/partial \
 # Install Docker Compose
 RUN apt-get update \
     && apt-get install -y docker-compose \
+    && apt-get install git \
     && rm -rf /var/lib/apt/lists/*
 
 USER root
