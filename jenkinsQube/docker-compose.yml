@@ -11,7 +11,6 @@ services:
     environment:
       JENKINS_ADMIN_ID: root
       JENKINS_ADMIN_PASSWORD: root
-      JENKIN_PORT: ${JENKINS_PORT}
 
   sonarqube:
     image: sonarqube:latest
