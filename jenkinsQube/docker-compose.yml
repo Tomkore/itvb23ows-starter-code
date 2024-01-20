@@ -4,10 +4,14 @@ services:
   jenkins:
       image: custom-jenkins
       ports:
-        - "8080:8080"
+        - "${JENKINS_PORT}:8080"
       volumes:
         - /var/run/docker.sock:/var/run/docker.sock
         - jenkins_data:/var/jenkins_home
+      environment:
+        JENKINS_ADMIN_ID: root
+        JENKINS_ADMIN_PASSWORD: root
+        JENKIN_PORT: ${JENKINS_PORT}
 
   sonarqube:
     image: sonarqube:latest
