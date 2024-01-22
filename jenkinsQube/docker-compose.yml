@@ -3,16 +3,17 @@ version: '3'
 services:
   jenkins:
     build: ./
+    image: jenkins
     ports:
       - "8080:8080"
+    networks:
+      - jenkins_network
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - jenkins_data:/var/jenkins_home
     environment:
       JENKINS_ADMIN_ID: root
       JENKINS_ADMIN_PASSWORD: root
-    networks:
-      - jenkins_network
 
   sonarqube:
     image: sonarqube:latest
@@ -53,5 +54,6 @@ volumes:
 
 networks:
   jenkins_network:
+    driver: bridge
 
 #    f2c5be76bd7047ec87903b3c6b5b843b
