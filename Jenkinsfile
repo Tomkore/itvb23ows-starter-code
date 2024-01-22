@@ -21,6 +21,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
+                    sh 'ping localhost:9000'
                     def sonarScannerHome = tool 'sq'
                     withSonarQubeEnv('sq') {
                         sh "${sonarScannerHome}/bin/sonar-scanner"
