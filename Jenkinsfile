@@ -23,6 +23,7 @@ pipeline {
                 script {
                     withSonarQubeEnv('sq') {
                         sh 'sonar-scanner'
+                    }
                 }
             }
         }
