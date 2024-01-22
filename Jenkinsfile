@@ -21,10 +21,8 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    scannerHome = tool 'SonarQube-Scanner-Mohamed'
-                        withSonarQubeEnv('SonarQube-Server-Mohamed') {
-                            sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=Mohamed -Dsonar.login=squ_2d93c700f7e12f75f4d3aa87f7ab13ea1d5cdf7d"
-                    }
+                    withSonarQubeEnv('sq') {
+                        sh 'sonar-scanner'
                 }
             }
         }
