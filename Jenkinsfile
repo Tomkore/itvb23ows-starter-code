@@ -19,12 +19,15 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-                    steps {
-                        withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
-                            sh 'sonar-scanner -Dsonar.projectKey=my_project_key -Dsonar.sources=. -Dsonar.host.url=http://mysonarqube.example.com -Dsonar.login=$SONAR_TOKEN'
-                        }
+            steps {
+                script {
+                    scannerHome = tool 'SonarQube-Scanner-Mohamed'
+                        withSonarQubeEnv('SonarQube-Server-Mohamed') {
+                            sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=Mohamed -Dsonar.login=squ_2d93c700f7e12f75f4d3aa87f7ab13ea1d5cdf7d"
                     }
                 }
+            }
+        }
 
         // Je kunt meer stages toevoegen voor testen, linting, etc.
     }
