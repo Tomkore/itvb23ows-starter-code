@@ -8,9 +8,7 @@ $_SESSION['player'] = 0;
 
 
 $db = include_once 'database.php';
-if ($db->connect_error) {
-    die("Connection failed: " . $db->connect_error);
-}
+echo $db;
 $db->prepare('INSERT INTO games VALUES ()')->execute();
 $_SESSION['game_id'] = $db->insert_id;
 
