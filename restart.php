@@ -8,7 +8,7 @@ $_SESSION['player'] = 0;
 
 print('wahed');
 $db = include_once 'database.php';
-echo $db;
+echo '$db';
 $db->prepare('INSERT INTO games VALUES ()')->execute();
 $_SESSION['game_id'] = $db->insert_id;
 
