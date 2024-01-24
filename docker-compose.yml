@@ -19,6 +19,6 @@ services:
     ports:
       - '3306:3306'
     volumes:
-      - "./hive.sql:/docker-entrypoint-initdb.d/"
+      - "./hive.sql:/docker-entrypoint-initdb.d/hive.sql"
     command: --default-authentication-plugin=mysql_native_password
 
