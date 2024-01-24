@@ -172,7 +172,14 @@
                     echo "oh no";
                     die("Connection failed: " . $db->connect_error);
                 }
-                $stmt = $db->prepare('SELECT * FROM moves WHERE game_id = '.$_SESSION['game_id']);
+                $stmt = $db->prepare('SELECT * FROM moves WHERE game_id = ?');
+                if (isset($_SESSION['game_id'])) {
+                    $stmt->bind_param('i', $_SESSION['game_id']); // Assuming game_id is an integer
+                } else {
+                    // Handle the case where $_SESSION['game_id'] is not set
+                    echo "Game ID is not set";
+                    exit;
+                }
                 $stmt->execute();
                 $result = $stmt->get_result();
                 while ($row = $result->fetch_array()) {
