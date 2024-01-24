@@ -16,7 +16,9 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: hive
+    ports:
+      - 3306:3306
     volumes:
-      - "./hive.sql:/docker-entrypoint-initdb.d/1.sql"
+      - "./hive.sql:/docker-entrypoint-initdb.d/"
     command: --default-authentication-plugin=mysql_native_password
 
