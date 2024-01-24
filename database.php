@@ -12,9 +12,6 @@ function set_state($state) {
 }
 
 $mysqli = new mysqli('db:3306', 'root', '', 'hive');
-if ($mysqli->connect_error) {
-    die("Connection failed: " . $mysqli->connect_error);
-}
 $mysqli->set_charset("utf8mb4");
 return $mysqli;
 
