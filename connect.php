@@ -9,4 +9,6 @@ else {
     echo "Connected successfully";
     echo "gabber";
 }
+
+echo $db->fetch_all()
 ?>
