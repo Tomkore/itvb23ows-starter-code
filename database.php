@@ -12,7 +12,7 @@ function set_state($state) {
 }
 
 $mysqli = new mysqli('db:3306', 'root', 'root', 'hive');
-echo $mysqli -> info;
+echo 'Hier';
 $mysqli->set_charset("utf8mb4");
 return $mysqli;
 
