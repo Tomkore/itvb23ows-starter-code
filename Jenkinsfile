@@ -14,7 +14,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Voer een script of build commando uit
-                sh 'docker compose down'
+                sh 'docker-compose down'
                 sh 'docker-compose up -d'
             }
         }
