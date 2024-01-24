@@ -7,6 +7,6 @@ if ($db->connect_error) {
 }
 else {
     echo "Connected successfully";
-    echo $db->get_connection_stats();
+    echo "gabber";
 }
 ?>
