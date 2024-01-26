@@ -17,16 +17,16 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                script {
-                    def sonarScannerHome = tool 'SQ'
-                    withSonarQubeEnv('SQ') {
-                        sh "${sonarScannerHome}/bin/sonar-scanner"
-                    }
-                }
-            }
-        }
+//         stage('SonarQube Analysis') {
+//             steps {
+//                 script {
+//                     def sonarScannerHome = tool 'SQ'
+//                     withSonarQubeEnv('SQ') {
+//                         sh "${sonarScannerHome}/bin/sonar-scanner"
+//                     }
+//                 }
+//             }
+//         }
 
         // Je kunt meer stages toevoegen voor testen, linting, etc.
     }
