@@ -9,13 +9,13 @@ $_SESSION['player'] = 0;
 
 $db = include_once 'database.php';
 if ($db === false) {
-    echo("Connection failed");
+    die("Connection failed");
 }
 else {
     $stmt = $db->prepare('INSERT INTO games VALUES ()');
     $_SESSION['game_id'] = $db->insert_id;
     if ($stmt === false){
-        echo("statement not prepared");
+        die("statement not prepared");
     }
     else{
         $stmt->execute();
@@ -23,6 +23,6 @@ else {
 }
 
 
-//header('Location: index.php');
+header('Location: index.php');
 
 ?>
