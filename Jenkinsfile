@@ -9,8 +9,6 @@ pipeline {
             }
         }
 
-
-
         stage('Build') {
             steps {
                 // Voer een script of build commando uit
@@ -22,7 +20,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    def sonarScannerHome = tool 'sq'
+                    def sonarScannerHome = tool 'SQ'
                     withSonarQubeEnv('SQ') {
                         sh "${sonarScannerHome}/bin/sonar-scanner"
                     }
