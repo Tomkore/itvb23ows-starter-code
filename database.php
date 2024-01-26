@@ -11,7 +11,7 @@ function set_state($state) {
     $_SESSION['player'] = $c;
 }
 
-$mysqli = new mysqli('db:3306', 'root', 'root', 'hive');
+$mysqli = new mysqli('db', 'root', 'root', 'hive', 3306);
 $mysqli->set_charset("utf8mb4");
 return $mysqli;
 
