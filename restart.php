@@ -8,7 +8,8 @@ $_SESSION['player'] = 0;
 
 
 $db = include_once 'database.php';
-echo $db->get_connection_stats();
+echo $db->get_connection_stats() . "\n";
+
 if ($db->connect_error) {
     die("Connection failed" . $db->connect_error);
 }
