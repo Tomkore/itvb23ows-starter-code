@@ -12,8 +12,8 @@ if ($db->connect_error) {
     die("Connection failed: " . $db->connect_error);
 }
 else {
-    $db->prepare('INSERT INTO games VALUES ()')->execute();
     $_SESSION['game_id'] = $db->insert_id;
+    $db->prepare('INSERT INTO games VALUES ()')->execute();
 }
 
 
