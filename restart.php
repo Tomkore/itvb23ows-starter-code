@@ -14,7 +14,12 @@ if ($db === false) {
 else {
     $_SESSION['game_id'] = $db->insert_id;
     $stmt = $db->prepare('INSERT INTO games VALUES ()');
-    $stmt->execute();
+    if ($stmt === false){
+        echo("statement not prepared");
+    }
+    else{
+        $stmt->execute();
+    }
 }
 
 
