@@ -8,14 +8,14 @@ $_SESSION['player'] = 0;
 
 
 $db = include_once 'database.php';
-//if ($db->connect_error) {
-//    die("Connection failed: " . $db->connect_error);
-//}
-//else {
-//    echo "connected";
-//}
-$db->prepare('INSERT INTO games VALUES ()')->execute();
-$_SESSION['game_id'] = $db->insert_id;
+if ($db->connect_error) {
+    die("Connection failed: " . $db->connect_error);
+}
+else {
+    $db->prepare('INSERT INTO games VALUES ()')->execute();
+    $_SESSION['game_id'] = $db->insert_id;
+}
+
 
 header('Location: index.php');
 
