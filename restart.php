@@ -12,8 +12,8 @@ if ($db === false) {
     echo("Connection failed");
 }
 else {
-    $_SESSION['game_id'] = $db->insert_id;
     $stmt = $db->prepare('INSERT INTO games VALUES ()');
+    $_SESSION['game_id'] = $db->insert_id;
     if ($stmt === false){
         echo("statement not prepared");
     }
