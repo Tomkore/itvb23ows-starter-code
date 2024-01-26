@@ -8,14 +8,14 @@ $_SESSION['player'] = 0;
 
 
 $db = include_once 'database.php';
-if ($db === false) {
-    die("Connection failed");
+if ($db->connect_error) {
+    die("Connection failed" . $db->connect_error);
 }
 else {
     $stmt = $db->prepare('INSERT INTO games VALUES ()');
     $_SESSION['game_id'] = $db->insert_id;
     if ($stmt === false){
-        die("statement not prepared");
+        die("statement not prepared" . $db->error);
     }
     else{
         $stmt->execute();
