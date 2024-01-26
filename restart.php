@@ -13,7 +13,7 @@ if ($db->connect_error) {
 }
 else {
     $_SESSION['game_id'] = $db->insert_id;
-    $stmt = $db->prepare('INSERT INTO games VALUES ()')
+    $stmt = $db->prepare('INSERT INTO games VALUES ()');
     $stmt->execute();
 }
 
