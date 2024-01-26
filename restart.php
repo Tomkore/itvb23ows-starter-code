@@ -14,7 +14,7 @@ if ($db->connect_error) {
     die("Connection failed" . $db->connect_error);
 }
 else {
-    $stmt = $db->prepare('INSERT INTO games VALUES ()');
+    $stmt = $db->prepare("INSERT INTO games VALUES ('')");
     $_SESSION['game_id'] = $db->insert_id;
     if ($stmt === false){
         die("statement not prepared" . $db->error);
