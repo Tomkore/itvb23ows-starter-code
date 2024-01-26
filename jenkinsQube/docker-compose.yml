@@ -55,5 +55,3 @@ volumes:
 networks:
   jenkins_network:
     driver: bridge
-
-#    f2c5be76bd7047ec87903b3c6b5b843b
