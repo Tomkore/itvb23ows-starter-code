@@ -41,6 +41,10 @@
                 isOwnTile($player, '0,0', $board),
                 "This tile belongs to player 0"
             );
+            $this->assertTrue(
+                isOwnTile(1, '0,1', $board),
+                "This tile belongs to player 1"
+            );
             $this->assertFalse(
                 isOwnTile($player, '0,1', $board),
                 "This tile does not belong to player 0"
