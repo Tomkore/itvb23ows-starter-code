@@ -137,10 +137,8 @@
             <select name="to">
                 <?php
                     foreach ($to as $pos) {
-                        if(neighboursAreSameColor($player, $pos, $board) or count($board)<2){
-                            if(!isset($board[$pos])){
-                                echo "<option value=\"$pos\">$pos</option>";
-                            }
+                        if(isValidPlayPosition($player, $pos, $board)){
+                            echo "<option value=\"$pos\">$pos</option>";
                         }
                     }
                 ?>
@@ -151,7 +149,7 @@
             <select name="from">
                 <?php
                     foreach (array_keys($board) as $pos) {
-                        if($board[$pos]===$player){
+                        if(isOwnTile($player, $pos, $board)){
                             echo "<option value=\"$pos\">$pos</option>";
                         }
 
