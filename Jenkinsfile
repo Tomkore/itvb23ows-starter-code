@@ -2,22 +2,32 @@ pipeline {
     agent any
 
     stages {
-         stage('Checkout') {
+        stage('Checkout') {
             steps {
                 // Haalt code op uit je Git repository
-                git url: 'https://github.com/Tomkore/itvb23ows-starter-code.git', branch: 'main'
+                git url: 'https://github.com/Tomkore/itvb23ows-starter-code.git', branch: 'Jenkins-sonarqube-containers'
             }
         }
-
 
         stage('Build') {
             steps {
                 // Voer een script of build commando uit
-                bat 'docker-compose up -d'
+                sh 'docker-compose up --build -d'
             }
         }
 
-        // Je kunt meer stages toevoegen voor testen, linting, etc.
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    def sonarScannerHome = tool 'SQ'
+                    withSonarQubeEnv('SQ') {
+                        sh "${sonarScannerHome}/bin/sonar-scanner"
+                    }
+                }
+            }
+        }
+
+        Je kunt meer stages toevoegen voor testen, linting, etc.
     }
 
     post {
