@@ -44,4 +44,20 @@ function slide($board, $from, $to) {
     return min(len($board[$common[0]]), len($board[$common[1]])) <= max(len($board[$from]), len($board[$to]));
 }
 
+function isValidPlayPosition($player, $pos, $board){
+    if(neighboursAreSameColor($player, $pos, $board) or count($board)<2){
+        if(!isset($board[$pos])){
+            return true;
+        }
+    }
+    return false;
+}
+
+function isOwnTile($player, $pos, $board){
+    if($board[$pos][0][0] === $player){
+        return true;
+    }
+    return false;
+}
+
 ?>
