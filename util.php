@@ -54,7 +54,7 @@ function slide($board, $from, $to): bool
 function isValidPlayPosition($player, $pos, $board): bool
 {
     if(neighboursAreSameColor($player, $pos, $board) or $board[$pos][0] == 2 or count($board)<2){
-        return true;
+        if(!isset($board[$pos])) return true;
     }
     return false;
 }

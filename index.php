@@ -158,9 +158,7 @@
             <select name="to">
                 <?php
                     foreach ($to as $pos) {
-                        //if(!isset($board[$pos])){
                             echo "<option value=\"$pos\">$pos</option>";
-                        //}
                     }
                 ?>
             </select>
@@ -173,6 +171,9 @@
             <input type="submit" value="Restart">
         </form>
         <strong><?php if (isset($_SESSION['error'])) echo($_SESSION['error']); unset($_SESSION['error']); ?></strong>
+        <form method="post" action="undo.php">
+            <input type="submit" value="Undo">
+        </form>
         <ol>
             <?php
                 $db = include 'database.php';
@@ -182,11 +183,9 @@
                 }
                 $stmt = $db->prepare('SELECT * FROM moves WHERE game_id = ?');
                 if (isset($_SESSION['game_id'])) {
-                    $stmt->bind_param('i', $_SESSION['game_id']); // Assuming game_id is an integer
+                    $stmt->bind_param('i', $_SESSION['game_id']);
                 } else {
-                    // Handle the case where $_SESSION['game_id'] is not set
                     echo "Game ID is not set";
-                    exit;
                 }
                 $stmt->execute();
                 $result = $stmt->get_result();
@@ -195,9 +194,6 @@
                 }
             ?>
         </ol>
-        <form method="post" action="undo.php">
-            <input type="submit" value="Undo">
-        </form>
     </body>
 </html>
 
