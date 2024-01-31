@@ -34,7 +34,8 @@
         public function testIsOwnTile(){
             $board = [
                 '0,0' => [[0, 'Q']],
-                '0,1' => [[1, 'Q']]
+                '0,1' => [[1, 'Q']],
+                '1,1' => [[0, 'B'], [1, 'B']]
             ];
             $player = 0;
             $this->assertTrue(
@@ -48,6 +49,10 @@
             $this->assertFalse(
                 isOwnTile($player, '0,1', $board),
                 "This tile does not belong to player 0"
+            );
+            $this->assertTrue(
+                isOwnTile(1, '1,1', $board),
+                "Top tile belongs to 1"
             );
 
         }
@@ -111,5 +116,20 @@
             );
         }
 
+        public function testJump(){
+            $board = [
+                '0,0' => [[0, 'Q']],
+                '0,1' => [[1, 'Q']],
+                '0,-1' =>[[0, 'G']]
+            ];
+            $this->assertTrue(
+                jump('0,2', $board, '0,1'),
+                "This is a valid jump"
+            );
+            $this->assertFalse(
+                jump('1,-1', $board, '0,1'),
+                "This is not a valid jump"
+            );
+        }
 
     }

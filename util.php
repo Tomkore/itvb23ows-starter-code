@@ -61,7 +61,7 @@ function isValidPlayPosition($player, $pos, $board): bool
 
 function isOwnTile($player, $pos, $board): bool
 {
-    if($board[$pos][0][0] == $player){
+    if(end($board[$pos])[0] == $player){
         return true;
     }
     return false;
@@ -82,4 +82,31 @@ function canPlay($hand, $piece, $player, $board, $to): bool
     }
     if(isset($_SESSION['error'])) return false;
     return true;
+}
+
+function jump($to, $board, $from): bool
+{
+    if (!hasNeighBour($to, $board)) {
+        return false;
+    }
+    foreach ($GLOBALS['OFFSETS'] as $pq) {
+        $result = tilesInBetween($from, $to, $pq, $board);
+        if($result) return $result;
+    }
+    return $result;
+}
+
+function tilesInBetween($from, $to, $pq, $board): bool
+{
+    $b = explode(',', $from);
+    $p = $b[0] + $pq[0];
+    $q = $b[1] + $pq[1];
+    $newFrom = $p .",". $q;
+    if($newFrom == $to){
+        return true;
+    }
+    elseif(!isset($board[$newFrom])){
+        return false;
+    }
+    return tilesInBetween($newFrom, $to, $pq, $board);
 }
