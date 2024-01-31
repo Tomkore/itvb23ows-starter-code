@@ -158,7 +158,6 @@
             </select>
             <select name="to">
                 <?php
-                    $boardCopy = $board;
                     foreach ($to as $pos) {
                         if(!isset($board[$pos])){
                             echo "<option value=\"$pos\">$pos</option>";

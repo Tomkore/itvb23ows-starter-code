@@ -42,9 +42,10 @@ else {
         } else {
             if ($from == $to) $_SESSION['error'] = 'Tile must move';
             elseif (isset($board[$to]) && $tile[1] != "B") $_SESSION['error'] = 'Tile not empty';
-            elseif ($tile[1] == "Q" || $tile[1] == "B") {
-                if (!slide($board, $from, $to))
+            elseif ($tile[1] == "Q" or $tile[1] == "B") {
+                if (!slide($board, $from, $to)) {
                     $_SESSION['error'] = 'Tile must slide';
+                }
             }
         }
     }
@@ -61,6 +62,7 @@ else {
         $stmt->execute();
         $_SESSION['last_move'] = $db->insert_id;
     }
+    if(isset($board[$to])) unset($board[$from]);
     $_SESSION['board'] = $board;
 }
 

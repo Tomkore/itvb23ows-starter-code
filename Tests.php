@@ -49,8 +49,30 @@
                 isOwnTile($player, '0,1', $board),
                 "This tile does not belong to player 0"
             );
+            $this->assertFalse(
+                hasNeighBour("-1,-1", $board),
+                "this has no neighbour"
+            );
         }
 
+        public function testSlide(){
+            $board = [
+                '0,0' => [[0, 'Q']],
+                '1,0' => [[1, 'Q']]
+            ];
+            $this->assertEquals(
+                1,  slide($board, "0,0", "0,1"),
+                "This tile can move"
+            );
+            $this->assertTrue(
+                hasNeighBour("0,1", $board),
+                "this tile has a neighbour"
+            );
+            $this->assertTrue(
+                isNeighbour("0,0", "0,1"),
+                "these tiles are neighbours"
+            );
+        }
     }
 
 
