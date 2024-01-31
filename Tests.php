@@ -16,7 +16,7 @@
             // Test een geldige positie
             $this->assertTrue(
                 isValidPlayPosition($player, '0,-1', $board),
-                "Position should be valid for player $player"
+                "Position should be valid for player player 0"
             );
 
             // Test een ongeldige positie (al bezet)
@@ -57,7 +57,6 @@
                 '0,0' => [[0, 'Q']],
                 '0,1' => [[1, 'Q']]
             ];
-            $player = 0;
             $this->assertFalse(
                 hasNeighBour("-1,-1", $board),
                 "this has no neighbour"
@@ -93,17 +92,24 @@
                 '0,-2' => [[0, 'A']],
                 '0,3' => [[1, 'A']],
             ];
-            $hand=['A', 'A', 'A', 'A', 'A', 'A', 'A', 'Q'];
-            $piece = 'Q';
+            $hand=["Q" => 1, "B" => 0, "S" => 2, "A" => 2, "G" => 3];
+            $piece = "Q";
             $player = 0;
             $to = "0,-3";
             $this->assertTrue(
                 canPlay($hand, $piece, $player, $board, $to),
-                "This is a valid move" . $hand[7] . $_SESSION['error']
+                "This is a valid move"
+            );
+            $board = [
+                '0,1' => [[0, 'Q']],
+                '1,1' => [[1, 'Q']]
+            ];
+            $hand=["Q" => 0, "B" => 2, "S" => 2, "A" => 2, "G" => 3];
+            $this->assertTrue(
+                canPlay($hand, "B", 0, $board, "0,0"),
+                "this move can be played"
             );
         }
 
+
     }
-
-
-?>

@@ -53,7 +53,7 @@ function slide($board, $from, $to): bool
 
 function isValidPlayPosition($player, $pos, $board): bool
 {
-    if((neighboursAreSameColor($player, $pos, $board) or count($board)<2) and !isset($board[$pos])){
+    if(neighboursAreSameColor($player, $pos, $board) or $board[$pos][0] == 2 or count($board)<2){
         return true;
     }
     return false;
@@ -69,7 +69,7 @@ function isOwnTile($player, $pos, $board): bool
 
 function canPlay($hand, $piece, $player, $board, $to): bool
 {
-    if (!array_search($piece, $hand))
+    if (!$hand[$piece])
         $_SESSION['error'] = "Player does not have tile";
     elseif (isset($board[$to]))
         $_SESSION['error'] = 'Board position is not empty';
