@@ -2,8 +2,8 @@
 
 $GLOBALS['OFFSETS'] = [[0, 1], [0, -1], [1, 0], [-1, 0], [-1, 1], [1, -1]];
 
-function isNeighbour($a, $b) {
-    if($a == $b) return false;
+function isNeighbour($a, $b): bool
+{
     $a = explode(',', $a);
     $b = explode(',', $b);
     if ($a[0] == $b[0] && abs($a[1] - $b[1]) == 1) return true;
@@ -14,8 +14,9 @@ function isNeighbour($a, $b) {
 
 function hasNeighBour($a, $board) {
     foreach (array_keys($board) as $b) {
-        if (isNeighbour($a, $b)) return true;
+        if (isNeighbour($a, $b) and isset($board[$b])) return true;
     }
+    return false;
 }
 
 function neighboursAreSameColor($player, $a, $board) {
@@ -66,3 +67,19 @@ function isOwnTile($player, $pos, $board): bool
     return false;
 }
 
+function canPlay($hand, $piece, $player, $board, $to): bool
+{
+    if (!array_search($piece, $hand))
+        $_SESSION['error'] = "Player does not have tile";
+    elseif (isset($board[$to]))
+        $_SESSION['error'] = 'Board position is not empty';
+    elseif (count($board) && !hasNeighBour($to, $board))
+        $_SESSION['error'] = "board position has no neighbour";
+    elseif (array_sum($hand) < 11 && !neighboursAreSameColor($player, $to, $board))
+        $_SESSION['error'] = "Board position has opposing neighbour";
+    elseif (array_sum($hand) <= 8 && $hand['Q'] && $piece != 'Q') {
+        $_SESSION['error'] = 'Must play queen bee';
+    }
+    if(isset($_SESSION['error'])) return false;
+    return true;
+}
