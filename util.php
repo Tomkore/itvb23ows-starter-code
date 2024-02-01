@@ -14,7 +14,7 @@ function isNeighbour($a, $b): bool
 
 function hasNeighBour($a, $board) {
     foreach (array_keys($board) as $b) {
-        if (isNeighbour($a, $b) and isset($board[$b])) return true;
+        if (isNeighbour($a, $b) and $board[$b][0] != '') return true;
     }
     return false;
 }
@@ -41,8 +41,8 @@ function slide($board, $from, $to): bool
     $b = explode(',', $to);
     $common = [];
     foreach ($GLOBALS['OFFSETS'] as $pq) {
-        $p = $b[0] + $pq[0];
-        $q = $b[1] + $pq[1];
+        $p = intval($b[0]) + $pq[0];
+        $q = intval($b[1]) + $pq[1];
         if (isNeighbour($from, $p.",".$q)) $common[] = $p.",".$q;
     }
     if (!isset($board[$common[0]]) and !isset($board[$common[1]]) and !isset($board[$from]) and !isset($board[$to])) {
@@ -53,15 +53,15 @@ function slide($board, $from, $to): bool
 
 function isValidPlayPosition($player, $pos, $board): bool
 {
-    if(neighboursAreSameColor($player, $pos, $board) or $board[$pos][0] == 2 or count($board)<2){
-        if(!isset($board[$pos])) return true;
+    if(hasNeighBour($pos, $board) and neighboursAreSameColor($player, $pos, $board) or $board[$pos][0] == 2 or count($board)<2){
+        if(!isset($board[$pos]) or count($board[$pos]) < 1) return true;
     }
     return false;
 }
 
 function isOwnTile($player, $pos, $board): bool
 {
-    if(end($board[$pos])[0] == $player){
+    if(end($board[$pos])[0] == $player and isset($board[$pos])){
         return true;
     }
     return false;
@@ -71,8 +71,8 @@ function canPlay($hand, $piece, $player, $board, $to): bool
 {
     if (!$hand[$piece])
         $_SESSION['error'] = "Player does not have tile";
-    elseif (isset($board[$to]))
-        $_SESSION['error'] = 'Board position is not empty';
+    elseif (isset($board[$to]) and count($board[$to]) > 0)
+        $_SESSION['error'] = 'Board position is not empty ';
     elseif (count($board) && !hasNeighBour($to, $board))
         $_SESSION['error'] = "board position has no neighbour";
     elseif (array_sum($hand) < 11 && !neighboursAreSameColor($player, $to, $board))
@@ -89,9 +89,12 @@ function jump($to, $board, $from): bool
     if (!hasNeighBour($to, $board)) {
         return false;
     }
+    if (isNeighbour($to, $from)){
+        return false;
+    }
     foreach ($GLOBALS['OFFSETS'] as $pq) {
         $result = tilesInBetween($from, $to, $pq, $board);
-        if($result) return $result;
+        if($result === true) return $result;
     }
     return $result;
 }
@@ -99,8 +102,8 @@ function jump($to, $board, $from): bool
 function tilesInBetween($from, $to, $pq, $board): bool
 {
     $b = explode(',', $from);
-    $p = $b[0] + $pq[0];
-    $q = $b[1] + $pq[1];
+    $p = intval($b[0]) + $pq[0];
+    $q = intval($b[1]) + $pq[1];
     $newFrom = $p .",". $q;
     if($newFrom == $to){
         return true;
@@ -109,4 +112,20 @@ function tilesInBetween($from, $to, $pq, $board): bool
         return false;
     }
     return tilesInBetween($newFrom, $to, $pq, $board);
+}
+
+function antMove($to, $board, $from, $visited=[]): bool
+{
+    if(slide($board, $from, $to)) return true;
+    foreach ($GLOBALS['OFFSETS'] as $pq) {
+        $b = explode(',', $to);
+        $p = intval($b[0]) + $pq[0];
+        $q = intval($b[1]) + $pq[1];
+        $newTo = $p .",". $q;
+        if(slide($board, $to, $newTo) and !array_search($newTo, $visited)){
+            $visited[] = $newTo;
+            if(antMove($newTo, $board, $from, $visited)) return true;
+        }
+    }
+    return false;
 }

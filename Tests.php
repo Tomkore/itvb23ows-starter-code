@@ -123,12 +123,41 @@
                 '0,-1' =>[[0, 'G']]
             ];
             $this->assertTrue(
-                jump('0,2', $board, '0,1'),
+                jump('0,2', $board, '0,-1'),
                 "This is a valid jump"
             );
             $this->assertFalse(
                 jump('1,-1', $board, '0,1'),
                 "This is not a valid jump"
+            );
+        }
+
+        public function testAntMove(){
+            $board = [
+                '0,0' => [[0, 'Q']],
+                '0,1' => [[1, 'Q']],
+                '0,-1' =>[[0, 'A']],
+                '0,2' =>[[0, 'B']],
+            ];
+            $this->assertTrue(
+                antMove("0,-1", $board, "0,3"),
+                "this is a valid move for an ant"
+            );
+            $this->assertFalse(
+                antMove("0,-1", $board, "0,4"),
+                "this is not a valid antmove"
+            );
+            $this->assertTrue(
+                antMove("0,-1", $board, "1,-1"),
+                "this is a valid antmove"
+            );
+            $this->assertTrue(
+                antMove("0,-1", $board, "1,1"),
+                "this is a valid antmove"
+            );
+            $this->assertTrue(
+                antMove("0,-1", $board, "-1,1"),
+                "this is a valid antmove"
             );
         }
 

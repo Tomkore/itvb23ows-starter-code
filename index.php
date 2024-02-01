@@ -149,7 +149,7 @@
             <select name="from">
                 <?php
                     foreach (array_keys($board) as $pos) {
-                        if(isOwnTile($player, $pos, $board)){
+                        if(isOwnTile($player, $pos, $board) and count($board[$pos]) > 0){
                             echo "<option value=\"$pos\">$pos</option>";
                         }
                     }

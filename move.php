@@ -42,7 +42,7 @@ else {
             $_SESSION['error'] = "Move would split hive";
         } else {
             if ($from == $to) $_SESSION['error'] = 'Tile must move';
-            elseif (isset($board[$to]) && $tile[1] != "B") $_SESSION['error'] = 'Tile not empty';
+            elseif (isset($board[$to]) && count($board[$to]) > 0 && $tile[1] != "B") $_SESSION['error'] = 'Tile not empty';
             elseif ($tile[1] == "Q" or $tile[1] == "B") {
                 if (!slide($board, $from, $to)) {
                     $_SESSION['error'] = 'Tile must slide';
@@ -50,6 +50,9 @@ else {
             }
             elseif ($tile[1] == "G" and !jump($to, $board, $from) ){
                 $_SESSION['error'] = 'No valid path to jump';
+            }
+            elseif ($tile[1] == "A" and !antMove($to, $board, $from)){
+                $_SESSION['error'] = 'No valid path for ant';
             }
         }
     }
@@ -60,7 +63,8 @@ else {
         if (isset($board[$to])) array_push($board[$to], $tile);
         else {
             $board[$to] = [$tile];
-            unset($board[$from]);
+            $boardLastInd = count($board[$from])-1;
+            unset($board[$from][$boardLastInd]);
         }
         $_SESSION['player'] = 1 - $_SESSION['player'];
         $db = include 'database.php';
