@@ -140,24 +140,49 @@
                 '0,2' =>[[0, 'B']],
             ];
             $this->assertTrue(
-                antMove("0,-1", $board, "0,3"),
-                "this is a valid move for an ant"
+                callAntMove("0,-1", $board, "1,2"),
+                "1 this is a valid move for an ant"
+            );
+            $this->assertTrue(
+                callAntMove("0,-1", $board, "0,3"),
+                "2 this is a valid move for an ant"
+            );
+            $this->assertTrue(
+                callAntMove("0,-1", $board, "1,-1"),
+                "this is a valid antmove"
+            );
+            $this->assertTrue(
+                callAntMove("0,-1", $board, "1,1"),
+                "this is a valid antmove"
+            );
+            $this->assertTrue(
+                callAntMove("0,-1", $board, "-1,1"),
+                "this is a valid antmove"
+            );
+        }
+
+        public function testSpiderMove(){
+            $board = [
+                '0,0' => [[0, 'Q']],
+                '0,1' => [[1, 'Q']],
+                '0,-1' =>[[0, 'S']],
+                '0,2' =>[[0, 'B']],
+            ];
+            $this->assertTrue(
+                callSpiderMove("0,-1", $board, "1,1"),
+                "this is a valid spidermove"
+            );
+            $this->assertTrue(
+                callSpiderMove("0,-1", $board, "-1,2"),
+                "1 this is a valid move for a spider"
             );
             $this->assertFalse(
-                antMove("0,-1", $board, "0,4"),
-                "this is not a valid antmove"
+                callSpiderMove("0,-1", $board, "1,-1"),
+                "2 this is not a valid spidermove"
             );
-            $this->assertTrue(
-                antMove("0,-1", $board, "1,-1"),
-                "this is a valid antmove"
-            );
-            $this->assertTrue(
-                antMove("0,-1", $board, "1,1"),
-                "this is a valid antmove"
-            );
-            $this->assertTrue(
-                antMove("0,-1", $board, "-1,1"),
-                "this is a valid antmove"
+            $this->assertFalse(
+                callSpiderMove("0,-1", $board, "-1,0"),
+                "4 this is not a valid spidermove"
             );
         }
 

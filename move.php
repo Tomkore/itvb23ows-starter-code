@@ -51,8 +51,11 @@ else {
             elseif ($tile[1] == "G" and !jump($to, $board, $from) ){
                 $_SESSION['error'] = 'No valid path to jump';
             }
-            elseif ($tile[1] == "A" and !antMove($to, $board, $from)){
+            elseif ($tile[1] == "A" and !callAntMove($to, $board, $from)){
                 $_SESSION['error'] = 'No valid path for ant';
+            }
+            elseif ($tile[1] == "S" and !callSpiderMove($to, $board, $from)){
+                $_SESSION['error'] = 'No valid path for spider';
             }
         }
     }
@@ -64,7 +67,7 @@ else {
         else {
             $board[$to] = [$tile];
             $boardLastInd = count($board[$from])-1;
-            unset($board[$from][$boardLastInd]);
+            //array_pop($board);
         }
         $_SESSION['player'] = 1 - $_SESSION['player'];
         $db = include 'database.php';
