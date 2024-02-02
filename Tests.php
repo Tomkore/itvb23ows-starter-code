@@ -186,4 +186,39 @@
             );
         }
 
+        public function testCanPAss(){
+            $board = [
+                '0,0' => [[0, 'Q']],
+                '0,1' => [[1, 'Q']],
+                '0,-1' =>[[0, 'S']],
+                '0,2' =>[[0, 'B']]
+            ];
+            $to = [];
+            foreach ($GLOBALS['OFFSETS'] as $pq) {
+                foreach (array_keys($board) as $pos) {
+                    $pq2 = explode(',', $pos);
+                    $to[] = ($pq[0] + $pq2[0]).','.($pq[1] + $pq2[1]);
+                }
+            }
+            $to = array_unique($to);
+            if (!count($to)) $to[] = '0,0';
+            $player = 1;
+            $hand=["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3];
+            $this->assertFalse(
+                canPass($board, $to, $player, $hand),
+                "This player can't pass"
+            );
+            $board = [
+                '0,0' => [[0, 'Q']],
+                '0,1' => [[1, 'Q']],
+                '1,1' =>[[0, 'S']],
+                '0,2' =>[[0, 'B']],
+                '-1,2' =>[[0,'A']]
+            ];
+            $this->assertTrue(
+                canPass($board, $to, $player, $hand),
+                'this player can pass.'
+            );
+        }
+
     }

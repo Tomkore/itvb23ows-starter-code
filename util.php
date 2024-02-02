@@ -178,3 +178,98 @@ function spiderMove($to, $board, $from, $visited, $stepCount): bool
     $localBoard[$from]=$tile;
     return false;
 }
+
+function move($from, $to, $player, $board, $hand, $doMove): bool
+{
+    $result = false;
+    if (!isset($board[$from])) {
+        $_SESSION['error'] = 'Board position is empty';
+    }
+    elseif ($board[$from][count($board[$from]) - 1][0] != $player)
+        $_SESSION['error'] = "Tile is not owned by player";
+    elseif ($hand['Q'])
+        $_SESSION['error'] = "Queen bee is not played";
+    else {
+        $tile = array_pop($board[$from]);
+        if (!hasNeighBour($to, $board))
+            $_SESSION['error'] = "Move would split hive";
+        else {
+            $all = array_keys($board);
+            $queue = [array_shift($all)];
+            while ($queue) {
+                $next = explode(',', array_shift($queue));
+                foreach ($GLOBALS['OFFSETS'] as $pq) {
+                    list($p, $q) = $pq;
+                    $p += $next[0];
+                    $q += $next[1];
+                    if (in_array("$p,$q", $all)) {
+                        $queue[] = "$p,$q";
+                        $all = array_diff($all, ["$p,$q"]);
+                    }
+                }
+            }
+            if ($all) {
+                $_SESSION['error'] = "Move would split hive";
+            } else {
+                if ($from == $to) $_SESSION['error'] = 'Tile must move';
+                elseif (isset($board[$to]) && count($board[$to]) > 0 && $tile[1] != "B") $_SESSION['error'] = 'Tile not empty';
+                elseif ($tile[1] == "Q" or $tile[1] == "B") {
+                    if (!slide($board, $from, $to)) {
+                        $_SESSION['error'] = 'Tile must slide';
+                    }
+                } elseif ($tile[1] == "G" and !jump($to, $board, $from)) {
+                    $_SESSION['error'] = 'No valid path to jump';
+                } elseif ($tile[1] == "A" and !callAntMove($to, $board, $from)) {
+                    $_SESSION['error'] = 'No valid path for ant';
+                } elseif ($tile[1] == "S" and !callSpiderMove($to, $board, $from)) {
+                    $_SESSION['error'] = 'No valid path for spider';
+                }
+            }
+        }
+        if (isset($_SESSION['error'])) {
+            if (isset($board[$from])) array_push($board[$from], $tile);
+            else $board[$from] = [$tile];
+        } else {
+            $result = true;
+            if (isset($board[$to])) array_push($board[$to], $tile);
+            else {
+                $board[$to] = [$tile];
+                $boardLastInd = count($board[$from]) - 1;
+            }
+            if ($doMove){
+                $_SESSION['player'] = 1 - $_SESSION['player'];
+                $db = include 'database.php';
+                $stmt = $db->prepare('insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "move", ?, ?, ?, ?)');
+                $stmt->bind_param('issis', $_SESSION['game_id'], $from, $to, $_SESSION['last_move'], get_state());
+                $stmt->execute();
+                $_SESSION['last_move'] = $db->insert_id;
+            }
+        }
+        $_SESSION['board'] = $board;
+    }
+    return $result;
+}
+
+function canPass($board, $to, $player ,$hand): bool
+{
+    if(count($board)<2) return false;
+    $error = $_SESSION['error'];
+    $canPass = false;
+    foreach(array_keys($board) as $pos) {
+        foreach($to as $posTo) {
+            if (isOwnTile($player, $pos, $board) and move($pos, $posTo, $player, $board, $hand, false)) {
+                $canPass = true;
+            }
+        }
+    }
+    foreach ($hand[$player] as $tile => $ct) {
+        foreach ($to as $pos) {
+            if ($ct>0 and canPlay($hand, $tile, $player, $board, $to) and isValidPlayPosition($player, $pos, $board)) {
+                $canPass = true;
+            }
+        }
+    }
+    if($error) $_SESSION['error'] = $error;
+    else unset($_SESSION['error']);
+    return $canPass;
+}

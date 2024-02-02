@@ -165,7 +165,9 @@
             <input type="submit" value="Move">
         </form>
         <form method="post" action="pass.php">
-            <input type="submit" value="Pass">
+            <?php
+                if (canPass($board, $to, $player ,$hand)) echo '<input type="submit" value="Pass">'
+            ?>
         </form>
         <form method="post" action="restart.php">
             <input type="submit" value="Restart">
