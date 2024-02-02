@@ -186,39 +186,126 @@
             );
         }
 
-        public function testCanPAss(){
+        public function testMove(){
             $board = [
+                '0,0' => [[1, 'Q']],
+                '0,-1' => [[0, 'Q']],
+                '1,-1' =>[[0, 'S']],
+                '1,0' =>[[0, 'B']],
+                '0,1' =>[[0,'A']],
+                '-1,1' =>[[0,'A']],
+                '-1,0' =>[[0,'A']],
+            ];
+            $hand=["Q" => 0, "B" => 1, "S" => 2, "A" => 3, "G" => 3];
+
+            $board2 = [
                 '0,0' => [[0, 'Q']],
                 '0,1' => [[1, 'Q']],
-                '0,-1' =>[[0, 'S']],
-                '0,2' =>[[0, 'B']]
+                '0,-1' =>[[0, 'B']],
+                '0,2' =>[[1, 'B']]
             ];
-            $to = [];
+            $hand2=["Q" => 0, "B" => 1, "S" => 2, "A" => 3, "G" => 3];
+            $this->assertTrue(
+                move('0,2', '1,1',1, $board2, $hand2),
+                'this move is valid'
+            );
+            $this->assertFalse(
+                move('0,0', '-1,0', 1, $board, $hand),
+                'this move is not valid'
+            );
+        }
+
+        public function testCanPAss(){
+            $board1 = [
+            '0,0' => [[0, 'Q']],
+            ];
+            $to1 = [];
             foreach ($GLOBALS['OFFSETS'] as $pq) {
-                foreach (array_keys($board) as $pos) {
+                foreach (array_keys($board1) as $pos) {
                     $pq2 = explode(',', $pos);
-                    $to[] = ($pq[0] + $pq2[0]).','.($pq[1] + $pq2[1]);
+                    $to1[] = ($pq[0] + $pq2[0]).','.($pq[1] + $pq2[1]);
                 }
             }
-            $to = array_unique($to);
-            if (!count($to)) $to[] = '0,0';
-            $player = 1;
-            $hand=["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3];
-            $this->assertFalse(
-                canPass($board, $to, $player, $hand),
-                "This player can't pass"
-            );
-            $board = [
+            $to1 = array_unique($to1);
+            if (!count($to1)) $to1[] = '0,0';
+            $player1 = 1;
+            $hand1=["Q" => 0, "B" => 1, "S" => 2, "A" => 3, "G" => 3];
+            $board2 = [
                 '0,0' => [[0, 'Q']],
                 '0,1' => [[1, 'Q']],
-                '1,1' =>[[0, 'S']],
-                '0,2' =>[[0, 'B']],
-                '-1,2' =>[[0,'A']]
+                '0,-1' =>[[0, 'B']],
+                '0,2' =>[[1, 'B']]
             ];
+            $to2 = [];
+            foreach ($GLOBALS['OFFSETS'] as $pq) {
+                foreach (array_keys($board2) as $pos) {
+                    $pq2 = explode(',', $pos);
+                    $to2[] = ($pq[0] + $pq2[0]).','.($pq[1] + $pq2[1]);
+                }
+            }
+            $to2 = array_unique($to2);
+            if (!count($to2)) $to2[] = '0,0';
+            $player2 = 1;
+            $hand2=["Q" => 0, "B" => 1, "S" => 2, "A" => 3, "G" => 3];
+            $board3 = [
+                '0,0' => [[1, 'Q']],
+                '0,-1' => [[0, 'Q']],
+                '1,-1' =>[[0, 'S']],
+                '1,0' =>[[0, 'B']],
+                '0,1' =>[[0,'A']],
+                '-1,1' =>[[0,'A']],
+                '-1,0' =>[[0,'A']],
+            ];
+            $to3 = [];
+            foreach ($GLOBALS['OFFSETS'] as $pq) {
+                foreach (array_keys($board3) as $pos) {
+                    $pq2 = explode(',', $pos);
+                    $to3[] = ($pq[0] + $pq2[0]).','.($pq[1] + $pq2[1]);
+                }
+            }
+            $to3 = array_unique($to3);
+            if (!count($to3)) $to3[] = '0,0';
+            $player3 = 1;
+            $hand3=["Q" => 0, "B" => 1, "S" => 2, "A" => 3, "G" => 3];
+            $this->assertFalse(
+                canPass($board1, $to1, $player1, $hand1),
+                'this player can not pass, because there is only one card.'
+            );
+            $this->assertFalse(
+                canPass($board2, $to2, $player2, $hand2),
+                "This player can't pass"
+            );
             $this->assertTrue(
-                canPass($board, $to, $player, $hand),
+                canPass($board3, $to3, $player3, $hand3),
                 'this player can pass.'
             );
+        }
+
+        public function testGameEnd(){
+            $board = [
+                '0,0' => [[0, 'Q']],
+                '0,-1' => [[1, 'Q']],
+                '1,-1' =>[[1, 'S']],
+                '1,0' =>[[1, 'B']],
+                '0,1' =>[[1,'A']],
+                '-1,1' =>[[1,'A']],
+                '-1,0' =>[[1,'A']],
+            ];
+            $expected[] = 1;
+            $result = gameEnd($board);
+            $this->assertEquals($expected[0], $result[0], 'Player 1 has won this round '.$result[0]);
+            $board = [
+                '0,0' => [[1, 'Q']],
+                '0,-1' => [[0, 'Q']],
+                '1,-1' =>[[0, 'S']],
+                '1,0' =>[[0, 'B']],
+                '0,1' =>[[0,'A']],
+                '-1,1' =>[[0,'A']],
+                '-1,0' =>[[0,'A']],
+            ];
+            $expected[0] = 0;
+            $result = gameEnd($board);
+            $this->assertEquals($expected, $result, 'Player 0 has won this round');
         }
 
     }

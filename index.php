@@ -169,6 +169,11 @@
                 if (canPass($board, $to, $player ,$hand)) echo '<input type="submit" value="Pass">'
             ?>
         </form>
+        <?php
+            $gameEnd = gameEnd($board);
+            if(count($gameEnd) == 1) echo 'Player ' . $gameEnd[0] . 'has won';
+            elseif (count($gameEnd) == 2) echo 'The game has ended in a draw';
+        ?>
         <form method="post" action="restart.php">
             <input type="submit" value="Restart">
         </form>

@@ -179,9 +179,9 @@ function spiderMove($to, $board, $from, $visited, $stepCount): bool
     return false;
 }
 
-function move($from, $to, $player, $board, $hand, $doMove): bool
+function move($from, $to, $player, $board, $hand)
 {
-    $result = false;
+    $move = false;
     if (!isset($board[$from])) {
         $_SESSION['error'] = 'Board position is empty';
     }
@@ -230,46 +230,55 @@ function move($from, $to, $player, $board, $hand, $doMove): bool
             if (isset($board[$from])) array_push($board[$from], $tile);
             else $board[$from] = [$tile];
         } else {
-            $result = true;
             if (isset($board[$to])) array_push($board[$to], $tile);
             else {
                 $board[$to] = [$tile];
-                $boardLastInd = count($board[$from]) - 1;
             }
-            if ($doMove){
-                $_SESSION['player'] = 1 - $_SESSION['player'];
-                $db = include 'database.php';
-                $stmt = $db->prepare('insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "move", ?, ?, ?, ?)');
-                $stmt->bind_param('issis', $_SESSION['game_id'], $from, $to, $_SESSION['last_move'], get_state());
-                $stmt->execute();
-                $_SESSION['last_move'] = $db->insert_id;
-            }
+            $move = true;
         }
         $_SESSION['board'] = $board;
     }
-    return $result;
+    return !$_SESSION['error'];
 }
 
 function canPass($board, $to, $player ,$hand): bool
 {
     if(count($board)<2) return false;
     $error = $_SESSION['error'];
-    $canPass = false;
     foreach(array_keys($board) as $pos) {
         foreach($to as $posTo) {
-            if (isOwnTile($player, $pos, $board) and move($pos, $posTo, $player, $board, $hand, false)) {
-                $canPass = true;
+            if (isOwnTile($player, $pos, $board) and move($pos, $posTo, $player, $board, $hand)) {
+                return false;
             }
         }
     }
     foreach ($hand[$player] as $tile => $ct) {
         foreach ($to as $pos) {
             if ($ct>0 and canPlay($hand, $tile, $player, $board, $to) and isValidPlayPosition($player, $pos, $board)) {
-                $canPass = true;
+                return false;
             }
         }
     }
     if($error) $_SESSION['error'] = $error;
     else unset($_SESSION['error']);
-    return $canPass;
+    return true;
+}
+
+function gameEnd($board){
+    $winningPlayer=[];
+    $neighbourCount = 0;
+    foreach(array_keys($board) as $pos) {
+        if ($board[$pos][0][1] == 'Q'){
+            foreach(array_keys($board) as $posNeighbour) {
+                if(isNeighbour($pos, $posNeighbour)){
+                    $neighbourCount += 1;
+                }
+                if($neighbourCount == 6){
+                    $winningPlayer[] = 1-$board[$pos][0][0];
+                }
+            }
+            $neighbourCount = 0;
+        }
+    }
+    return $winningPlayer;
 }
